@@ -1,0 +1,658 @@
+var pPanel = Ui.AddPanel()
+pPanel.w = 21
+pPanel.h = 19
+pPanel.anchor = top_left
+pPanel.dock = top_left
+pPanel.x = 5
+pPanel.y = 6
+
+var flipflop_cell = false
+pPanel.visible = flipflop_cell
+
+
+var min
+min = time.minute
+
+var s = -1
+
+pPanel.style = s
+?s = 7
+  s = 1
+
+var period
+var min
+var hour
+
+?time.hour < 12
+  hour = time.hour
+  period = ＂a.m.＂
+:?time.hour = 12
+  hour = time.hour
+  period = ＂p.m.＂
+:
+  hour = time.hour-12
+  period = ＂p.m.＂
+
+var nArr = ［ascii
+ _
+| |
+|_|
+asciiend, ascii
+  _
+ /|
+  |
+asciiend, ascii
+ _
+ _］
+［_
+asciiend, ascii
+ _
+ _］
+ _］
+asciiend, ascii
+   
+/_|
+  |
+asciiend, ascii
+ _
+［_
+ _］
+asciiend, ascii
+ _
+|_
+|_|
+asciiend, ascii
+__
+ _|
+  |
+asciiend, ascii
+ _
+［_］
+［_］
+asciiend, ascii
+ _
+［_|
+ _|
+asciiend］
+
+var hh = 0
+var hours
+hours = ＂＂+(hour/10.0)
+var hArr
+hArr = string.Split(hours, ＂,＂)
+var nH
+nH = int.Parse(hArr［0］)
+var NH = 0
+?string.Size(hours) > 1
+  NH = int.Parse(hArr［1］)
+var NHA
+NHA = nArr［NH］
+var nHA
+nHA = nArr［nH］
+
+var mm = 0
+var mins
+?min < 1
+  mins = ＂0,0＂
+:?min < 10
+  mins = ＂＂+ (0 + (min/10.0))
+:
+  mins = ＂＂+ (min/10.0)+＂,0＂
+var mArr
+mArr = string.Split(mins,＂,＂)
+var mH
+mH = int.Parse(mArr［0］)
+var MH
+MH = int.Parse(mArr［1］)
+var MHA
+MHA = nArr［MH］
+var mHA
+mHA = nArr［mH］
+
+?totaltime%2 = 0
+  hArr.Clear()
+  mArr.Clear()
+
+?flipflop_cell = true
+  >`17,7,@mHA@ 
+  >`20,7,@MHA@ 
+  ?NH = 0 & nH ! 1
+    >`8,7,@NHA@ 
+    >`11,7,@nHA@ 
+  :
+    >`8,7,@nHA@ 
+    >`11,7,@NHA@
+  >`15,8,'\n'
+  >`11,10,   @period@
+  ^\n@time.month@/@time.day@/@time.year@
+
+  >`9,14, _◘_ ###( '')\n
+        ^ `-´ ### / /
+  >`10,19,  ▓#####───\n
+         ^▓ ▓#####───
+
+var CosmeticsApp = Ui.AddButton()
+CosmeticsApp.w = 7
+CosmeticsApp.h = 4
+CosmeticsApp.text = ＂＂
+CosmeticsApp.x = -4
+CosmeticsApp.y = 0
+CosmeticsApp.SetPressed(CosmeticsF)
+pPanel.Add(CosmeticsApp)
+
+var CosmeticsPanel = Ui.AddPanel()
+CosmeticsPanel.w = 21
+CosmeticsPanel.h = 19
+CosmeticsPanel.dock = top_left
+CosmeticsPanel.anchor = top_left
+CosmeticsPanel.x = pPanel.x
+CosmeticsPanel.y = pPanel.y
+var flipflop_cosm = false
+CosmeticsPanel.visible = flipflop_cosm
+CosmeticsPanel.style = s
+
+func CosmeticsF()
+  flipflop_cosm = ! flipflop_cosm
+  flipflop_cell = false
+
+?flipflop_cosm = true & !bighead
+  >`7,22,#red,*Activate bighead
+
+
+// SleepyStonehead HAT
+  // Author: mr doo doo fart (or Cem )
+  // v1.0
+
+var sleepSH = Ui.AddButton()
+sleepSH.w = 17
+sleepSH.h = 3
+sleepSH.dock = top_left
+sleepSH.y = 2
+sleepSH.x = 10
+sleepSH.text = ＂SleepyStonehead＂
+CosmeticsPanel.Add(sleepSH)
+var flipflop_ssh = false
+?flipflop_ssh = true
+  sleepSH.tcolor = #33ff33
+  
+  // Hat
+  >h-3,-2,#rainbow,ascii
+#____
+/____|
+o
+asciiend
+
+  // Scarf
+  >h-2,1,#blue,ascii
+#==:
+|
+asciiend
+
+  // Eyes
+  >h-2,0,#white,( --)
+:
+  sleepSH.tcolor = #5a5a5a
+sleepSH.SetPressed(sleepSHF)
+func sleepSHF()
+  flipflop_ssh = !flipflop_ssh
+
+// Wavy Scarf
+  // Bighead Wavy Scarf animated by electronic
+  // Script by Deaymon
+  // Edited by Bitty45
+  // v2.2.0
+
+var scarfColor = #blue
+
+var interval = 3
+var total_sprites = 4
+var total_time = total_sprites * interval
+
+var bigScarfFrame1 = ＂,-._.-=＂
+var bigScarfFrame2 = ＂-._.-.=＂
+var bigScarfFrame3 = ＂._.-._=＂
+var bigScarfFrame4 = ＂_.-._.=＂
+var smallScarfFrame1 = ＂_..＂
+var smallScarfFrame2 = ＂.-.＂
+var smallScarfFrame3 = ＂-._＂
+var smallScarfFrame4 = ＂._.＂
+var _time
+var _bighead
+_bighead = bighead
+
+func ScarfMain()
+  _time = time
+  ?_bighead
+    //bighead
+    ?_time % total_time < interval
+      >h-6,1,@scarfColor@,@bigScarfFrame1@
+    :?_time % total_time < interval * 2
+      >h-6,1,@scarfColor@,@bigScarfFrame2@
+    :?_time % total_time < interval * 3
+      >h-6,1,@scarfColor@,@bigScarfFrame3@
+    :?_time % total_time < interval * 4
+      >h-6,1,@scarfColor@,@bigScarfFrame4@
+  :
+    //non-bighead
+    ?_time % total_time < interval
+      >h-4,1,@scarfColor@,@smallScarfFrame1@
+    :?_time % total_time < interval * 2
+      >h-4,1,@scarfColor@,@smallScarfFrame2@
+    :?_time % total_time < interval * 3
+      >h-4,1,@scarfColor@,@smallScarfFrame3@
+    :?_time % total_time < interval * 4
+      >h-4,1,@scarfColor@,@smallScarfFrame4@
+
+var wavyS = Ui.AddButton()
+wavyS.w = 17
+wavyS.h = 3
+wavyS.dock = top_left
+wavyS.y = 5
+wavyS.x = 10
+wavyS.text = ＂WavyScarf＂
+wavyS.SetPressed(wavySF)
+CosmeticsPanel.Add(wavyS)
+var flipflop_ws = false
+?flipflop_ws = true
+  ScarfMain()
+  wavyS.tcolor = #33ff33
+:
+  wavyS.tcolor = #5a5a5a
+func wavySF()
+  flipflop_ws = ! flipflop_ws
+
+// ChefHat
+  // by: Fyda
+  // edited by bitty45 to allow smallhead
+  // small guidance on the smallhat
+  // ^art from standardcombo
+  // Version 2.0.0
+
+var bigHat = ascii
+## _ _ _
+##( | | )
+###|   |
+###╘═══╛
+asciiend
+
+var smallhat = ascii
+CCO
+|_|
+asciiend
+
+var chcolor = #333388
+var chefhat = Ui.AddButton()
+chefhat.w = 17
+chefhat.h = 3
+chefhat.dock = top_left
+chefhat.y = 11
+chefhat.x = 10
+chefhat.text = ＂ChefHat＂
+chefhat.SetPressed(chefHF)
+CosmeticsPanel.Add(chefhat)
+
+var flipflop_ch = false
+?flipflop_ch = true
+  ?bighead
+    >h-5,-4,@chcolor@,@bigHat@
+  :
+    >h-1,-1,@chcolor@,@smallhat@
+  chefhat.tcolor = #33ff33
+:
+  chefhat.tcolor = #5a5a5a
+
+func chefHF()
+  flipflop_ch = !flipflop_ch
+
+// MushroomHat
+  // Created by TeumessianSven
+
+var mushhat = Ui.AddButton()
+mushhat.w = 17
+mushhat.h = 3
+mushhat.dock = top_left
+mushhat.y = 14
+mushhat.x = 10
+mushhat.text = ＂MushroomHat＂
+mushhat.SetPressed(mushhF)
+CosmeticsPanel.Add(mushhat)
+
+var flipflop_mhH = false
+?!bighead
+  mushhat.tcolor = #ef2222
+  flipflop_mhH = false
+:?flipflop_mhH = true
+  import Cosmetics/Hats/MushroomHat
+  mushhat.tcolor = #33ff33
+:
+  mushhat.tcolor = #5a5a5a
+
+func mushhF()
+  ?bighead
+    flipflop_mhH = !flipflop_mhH
+  :
+    play error
+
+// SantaHat
+  // by: link2_thepast, martosss
+  // v2.0.1
+
+var santahat = Ui.AddButton()
+santahat.w = 17
+santahat.h = 3
+santahat.dock = top_left
+santahat.y = 8
+santahat.x = 10
+santahat.text = ＂SantaHat＂
+santahat.SetPressed(santaHF)
+CosmeticsPanel.Add(santahat)
+
+var flipflop_sh = false
+?flipflop_sh = true
+  import Cosmetics/Hats/SantaHat
+  santahat.tcolor = #33ff33
+:
+  santahat.tcolor = #5a5a5a
+
+func santaHF()
+  flipflop_sh = !flipflop_sh
+
+var UIsApp = Ui.AddButton()
+UIsApp.w = 7
+UIsApp.h = 4
+UIsApp.text = ＂＂
+UIsApp.x = 4
+UIsApp.y = 0
+UIsApp.SetPressed(PetsF)
+pPanel.Add(UIsApp)
+
+var PetsPanel = Ui.AddPanel()
+PetsPanel.w = 21
+PetsPanel.h = 19
+PetsPanel.dock = top_left
+PetsPanel.anchor = top_left
+PetsPanel.x = pPanel.x
+PetsPanel.y = pPanel.y
+var flipflop_pets = false
+PetsPanel.visible = flipflop_pets
+PetsPanel.style = s
+
+func PetsF()
+  flipflop_pets = ! flipflop_pets
+  flipflop_cell = false
+
+// PetPanda
+  // by Mind Stone Thief and xx.
+
+var petpanda = Ui.AddButton()
+petpanda.w = 17
+petpanda.h = 3
+petpanda.dock = top_left
+petpanda.y = 2
+petpanda.x = 10
+petpanda.text = ＂PetPanda＂
+petpanda.SetPressed(petpandaF)
+PetsPanel.Add(petpanda)
+
+var flipflop_pp = false
+?flipflop_pp = true
+  import Cosmetics/PetPanda
+  petpanda.tcolor = #33ff33
+:
+  petpanda.tcolor = #5a5a5a
+
+func petpandaF()
+  flipflop_pp = !flipflop_pp
+
+// LegsTurkeyPet
+  // by Link2_thepast
+var legsturkeypet = Ui.AddButton()
+legsturkeypet.w = 17
+legsturkeypet.h = 3
+legsturkeypet.dock = top_left
+legsturkeypet.y = 5
+legsturkeypet.x = 10
+legsturkeypet.text = ＂LegsTurkeyPet＂
+legsturkeypet.SetPressed(legsturkeypetF)
+PetsPanel.Add(legsturkeypet)
+
+var flipflop_ltp = false
+?flipflop_ltp = true
+  import Cosmetics/LegsTurkeyPet
+  legsturkeypet.tcolor = #33ff33
+:
+  legsturkeypet.tcolor = #5a5a5a
+
+func legsturkeypetF()
+  flipflop_ltp = !flipflop_ltp
+
+// TarPusher
+  // by: basic.gameplay
+var tarpusher = Ui.AddButton()
+tarpusher.w = 17
+tarpusher.h = 3
+tarpusher.dock = top_left
+tarpusher.y = 8
+tarpusher.x = 10
+tarpusher.text = ＂TarPusher＂
+tarpusher.SetPressed(tarpusherF)
+PetsPanel.Add(tarpusher)
+
+var flipflop_tp = false
+?flipflop_tp = true
+  import Cosmetics/TarPusher
+  tarpusher.tcolor = #33ff33
+:
+  tarpusher.tcolor = #5a5a5a
+
+func tarpusherF()
+  flipflop_tp = !flipflop_tp
+
+// PetSnowman
+  // by: micahel.g.g
+var petsnowman = Ui.AddButton()
+petsnowman.w = 17
+petsnowman.h = 3
+petsnowman.dock = top_left
+petsnowman.y = 11
+petsnowman.x = 10
+petsnowman.text = ＂PetSnowman＂
+petsnowman.SetPressed(petsnowmanF)
+PetsPanel.Add(petsnowman)
+
+var flipflop_ps = false
+?flipflop_ps = true
+  import Cosmetics/PetSnowman
+  petsnowman.tcolor = #33ff33
+:
+  petsnowman.tcolor = #5a5a5a
+
+func petsnowmanF()
+  flipflop_ps = !flipflop_ps
+
+// PetMushroom
+  // by Pyro
+var petmushroom = Ui.AddButton()
+petmushroom.w = 17
+petmushroom.h = 3
+petmushroom.dock = top_left
+petmushroom.y = 14
+petmushroom.x = 10
+petmushroom.text = ＂PetMushroom＂
+petmushroom.SetPressed(petmushroomF)
+PetsPanel.Add(petmushroom)
+
+var flipflop_pm = false
+?flipflop_pm = true
+  import Cosmetics/PetMushroom
+  petmushroom.tcolor = #33ff33
+:
+  petmushroom.tcolor = #5a5a5a
+
+func petmushroomF()
+  flipflop_pm = !flipflop_pm
+
+var StatsApp = Ui.AddButton()
+StatsApp.w = 7
+StatsApp.h = 4
+StatsApp.text = ＂＂
+StatsApp.x = -4
+StatsApp.y = 5
+pPanel.Add(StatsApp)
+StatsApp.SetPressed(StatsF)
+
+// BragMeter
+  // Made by insult2
+var bigstr = 0
+var a = 50
+var b = 0
+var c = 0
+var cstr = ＂＂
+var bar = ［］
+var cstr2 = ＂＂
+var d = 0
+var donttry = false
+var num
+
+var mmin = math.Min
+var igco = item.getCount
+var sjoi = string.Join
+
+var gcc = igco(＂enchant＂)
+var uion = false
+
+
+var hcalc =(item.GetTreasureLimit() - 100)/5
+//save grade calc
+var kic = mmin(res.ki,2000000) / 2000000.0
+var mhc = mmin((hcalc),60) / 60.0
+var gpc = mmin(totalgp,25000) / 25000.0
+var osc = mmin(igco(＂moondial＂)+igco(
+^＂grappling_hook_lv2＂),2)
+
+//lost item count
+var lic = mmin(192,
+^igco(＂blade＂) + igco(＂mask＂)
+^+ igco(＂fire_talisman＂)  +
+^igco(＂bash＂) + igco(＂skeleton_arm＂)+
+^igco(＂aether_talisman＂))
+var licperc = lic/192.0
+var oscperc = osc/2.0
+
+var gr = -1.0
+var h
+
+func gradecalc(x)
+ h = (-x * x + (2 + 3) * x)/(1 + 3)
+ return h
+
+var kicc = mmin(res.crystals,50) / 50.0
+
+var gru = mmin(0.075 * kic + 0.125 * mhc
+^ + 0.25 * gpc
+^ + 0.35 * licperc + 0.1 * oscperc + 0.1 * kicc
+^,1)
+
+?gr = -1.0
+ gr = gradecalc(gru)
+
+var grk = gr * 20
+var grck = math.FloorToInt(gr * 10)
+
+var acgr = gr * 10000 / 100.00000
+var acgru = gru * 10000 / 100.00000
+
+/////
+
+var prevsec = 0
+var storedtime = 0
+var fps = 0
+?time.second ! prevsec
+ fps = (totaltime - storedtime) / 
+ ^ (time.second - prevsec)
+ prevsec = time.second
+ storedtime = totaltime
+
+var RunCount_c = 0
+?totaltime = 1
+  RunCount_c++
+?flipflop_stats = true
+  >`7,7,Brag Score: @math.FloorToInt(acgr)@
+  ?loc.besttime/30>=60
+    >`7,9,@loc.name@ @loc.stars@☆\nBest Time: 
+    ^@(loc.besttime/30)/60@m
+    ^@(loc.besttime/30)-60@s
+  :
+    >`7,9,@loc.name@ @loc.stars@☆\nBest Time: 
+    ^@loc.besttime/30@s
+  ?totaltime/30>=60
+    >`7,11,Total Time: 
+    ^@(totaltime/30)/60@m
+    ^@(totaltime/30)-60@s
+  :
+    >`7,11,Total Time: 
+    ^@totaltime/30@s
+  >`7,13,@fps-1@ FPS
+  >`7,15,Screen: @screen.i@
+  >`7,16,Foe Count: @foe.count@
+  >`7,17,@foe.name@
+  >`7,19,Name: @player.name@
+  >`7,20,Level: 
+^@(item.GetTreasureLimit()-100)/5@
+  >`7,21,Run Count: @RunCount_c@
+var StatsPanel = Ui.AddPanel()
+StatsPanel.w = 21
+StatsPanel.h = 19
+StatsPanel.dock = top_left
+StatsPanel.anchor = top_left
+StatsPanel.x = pPanel.x
+StatsPanel.y = pPanel.y
+var flipflop_stats = false
+StatsPanel.visible = flipflop_stats
+StatsPanel.style = s
+
+func StatsF()
+  flipflop_stats = ! flipflop_stats
+  flipflop_cell = false
+
+var SettingsApp = Ui.AddButton()
+SettingsApp.w = 7
+SettingsApp.h = 4
+SettingsApp.text = ＂＂
+SettingsApp.x = 4
+SettingsApp.y = 5
+pPanel.Add(SettingsApp)
+SettingsApp.SetPressed(SettingsF)
+
+var SettingsPanel = Ui.AddPanel()
+SettingsPanel.w = 21
+SettingsPanel.h = 19
+SettingsPanel.dock = top_left
+SettingsPanel.anchor = top_left
+SettingsPanel.x = pPanel.x
+SettingsPanel.y = pPanel.y
+var flipflop_settings = false
+SettingsPanel.visible = flipflop_settings
+
+func SettingsF()
+  flipflop_settings = ! flipflop_settings
+  flipflop_cell = false
+
+var sChange = Ui.AddButton()
+sChange.y = 11
+sChange.x = -31
+sChange.w = 7
+sChange.h = 3
+sChange.text = ＂ -=- ＂
+sChange.SetPressed(sp)
+sChange.style = -1
+
+// import UI/BragMeter
+func sp()
+  flipflop_cell = ! flipflop_cell
+  flipflop_cosm = false
+  flipflop_pets = false
+  flipflop_stats = false
+  flipflop_settings = false
+
+>`@input.x@,@input.y@,█\n@input.x@:@input.y@
